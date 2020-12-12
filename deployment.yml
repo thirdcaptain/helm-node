@@ -1,0 +1,44 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: node-app-service
+spec:
+  selector:
+    app: node-app
+  ports:
+    - protocol: "TCP"
+      # Port accessible only inside cluster (internal)
+      port: 8081
+      # Port to forward to inside the pod (individual pod port)
+      targetPort: 8080
+      # Port accessible outside cluster (external)
+      nodePort: 30001
+  type: LoadBalancer
+ 
+ 
+ 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-app-deployment
+  labels:
+    app: node-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: node-app
+  template:
+    metadata:
+      labels:
+        app: node-app
+    spec:
+      containers:
+        - name: node-app 
+          image: thirdcaptain/nodeapp:1.0     #pull from Docker Hub
+          #image: node-app-deployment-local   #local image
+          #imagePullPolicy: Never             #policy to force use local image
+          ports:
+            - containerPort: 8080
