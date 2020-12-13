@@ -27,14 +27,14 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - containerPort: {{ .Values.service.servicePort}}
+        - containerPort: {{ .Values.service.targetPort}}
         resources:
           requests:
             cpu: "{{ .Values.image.resources.requests.cpu }}"
             memory: "{{ .Values.image.resources.requests.memory }}"
         env:
           - name: PORT
-            value : "{{ .Values.service.servicePort }}"
+            value : "{{ .Values.service.targetPort }}"
         {{- if .Values.image.livenessProbe }}
         livenessProbe:
 {{ toYaml .Values.image.livenessProbe | indent 10 }}

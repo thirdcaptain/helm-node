@@ -3,7 +3,8 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: thirdcaptain/nodeapp
+  #repository: thirdcaptain/nodeapp
+  repository: thirdcaptain/node-hello
   tag: "1.0"
   pullPolicy: IfNotPresent 
   resources:
@@ -28,8 +29,9 @@ image:
   #   periodSeconds: 10  
 service:
   name: Node
-  type: NodePort
-  servicePort: 3000
+  type: LoadBalancer
+  servicePort: 80
+  targetPort: 8080
 hpa:
   enabled: false
   minReplicas: 1
